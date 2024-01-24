@@ -1,30 +1,43 @@
 package com.example.RestApi.common.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.Properties;
+import java.io.File;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EnableTransactionManagement
+@Service
 public class EmailAttachmentSender {
 
-	public static void sendEmailWithAttachments(String host, String port, final String addresses, final String password,
-			String name, String address, String subject, String message)
-			throws AddressException, MessagingException, UnsupportedEncodingException {
+    /*@Autowired
+	private JavaMailSender mailSender;*/
+
+    public static void sendEmailWithAttachments(String name, String toEmail,
+												String subject,
+												String body, String attachment) {
+//		javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
+//		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+//        mimeMessageHelper.setFrom("arjungautam8877@gmail.com");
+//        mimeMessageHelper.setTo(toEmail);
+//		String msg = "Sent By:- " + name + "\r\n" + " Message is :-  " + body;
+//        mimeMessageHelper.setText(msg);
+//        mimeMessageHelper.setSubject(subject);
+//
+//        FileSystemResource fileSystemResource =
+//                new FileSystemResource(new File(attachment));
+//        mimeMessageHelper.addAttachment(fileSystemResource.getFilename(),
+//                fileSystemResource);
+//        mailSender.send(mimeMessage);
+        System.out.printf("Mail with attachment sent successfully..");
+    }
+
+}
+
+/*	public static void sendEmailWithAttachments(String host, String port, final String addresses, final String password,
+			String name, String address, String subject, String message) {
 		// sets SMTP server properties
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", host);
@@ -55,6 +68,5 @@ public class EmailAttachmentSender {
 
 		Transport.send(msg);
 
-	}
+	}*/
 
-}

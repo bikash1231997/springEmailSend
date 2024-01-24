@@ -1,43 +1,27 @@
 package com.example.RestApi.angular.model;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 public class EmailModel {
 
-	@NotNull(message = "Name Must Not Be Null")
-	private String name;
+    @NotNull(message = "Name Must Not Be Null")
+    private String name;
 
-	@NotNull(message = "Message Must Not Be Null")
-	private String msg;
+    @NotNull(message = "Message Must Not Be Null")
+    private String msg;
 
-	@NotNull(message = "Subject Must Not Be Null")
-	private String sub;
+    @NotNull(message = "Subject Must Not Be Null")
+    private String sub;
 
 	@Email
-	@NotNull(message = "Email Address Must Not Be Null")
-	private String emailaddr;
+    @NotNull(message = "Email Address Must Not Be Null")
+    private String emailaddr;
 
-	@NotNull(message = "Checker Must Not Be Null")
-	private String checker;
-
-	public String getChecker() {
-		return checker;
-	}
-
-	public void setChecker(String checker) {
-		this.checker = checker;
-	}
-
-	public String getEmailaddr() {
-		return emailaddr;
-	}
-
-	public void setEmailaddr(String emailaddr) {
-		this.emailaddr = emailaddr;
-	}
-
-	public String getName() {
+    @NotNull(message = "Checker Must Not Be Null")
+    private String checker;
+    
+    public String getName() {
 		return name;
 	}
 
@@ -61,17 +45,37 @@ public class EmailModel {
 		this.sub = sub;
 	}
 
-	public EmailModel(@NotNull(message = "Name Must Not Be Null") String name,
-			@NotNull(message = "Message Must Not Be Null") String msg,
-			@NotNull(message = "Subject Must Not Be Null") String sub,
-			@Email @NotNull(message = "Email Address Must Not Be Null") String emailaddr,
-			@NotNull(message = "Checker Must Not Be Null") String checker) {
-		super();
-		this.name = name;
-		this.msg = msg;
-		this.sub = sub;
+	public String getEmailaddr() {
+		return emailaddr;
+	}
+
+	public void setEmailaddr(String emailaddr) {
 		this.emailaddr = emailaddr;
+	}
+
+	public String getChecker() {
+		return checker;
+	}
+
+	public void setChecker(String checker) {
 		this.checker = checker;
 	}
+
+	public EmailModel() {
+    	super();
+    }
+    
+    public EmailModel(@NotNull(message = "Name Must Not Be Null") String name,
+                      @NotNull(message = "Message Must Not Be Null") String msg,
+                      @NotNull(message = "Subject Must Not Be Null") String sub,
+                      @Email @NotNull(message = "Email Address Must Not Be Null") String emailaddr,
+                      @NotNull(message = "Checker Must Not Be Null") String checker) {
+        super();
+        this.name = name;
+        this.msg = msg;
+        this.sub = sub;
+        this.emailaddr = emailaddr;
+        this.checker = checker;
+    }
 
 }
