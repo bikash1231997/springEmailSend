@@ -1,37 +1,50 @@
 package com.example.RestApi.common.utils;
 
-import java.io.File;
-
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+
+import java.io.File;
 
 
 @Service
 public class EmailAttachmentSender {
 
-    /*@Autowired
-	private JavaMailSender mailSender;*/
+    @Autowired
+    private JavaMailSender javaMailSender;
 
-    public static void sendEmailWithAttachments(String name, String toEmail,
-												String subject,
-												String body, String attachment) {
-//		javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
-//		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-//        mimeMessageHelper.setFrom("arjungautam8877@gmail.com");
-//        mimeMessageHelper.setTo(toEmail);
-//		String msg = "Sent By:- " + name + "\r\n" + " Message is :-  " + body;
-//        mimeMessageHelper.setText(msg);
-//        mimeMessageHelper.setSubject(subject);
-//
-//        FileSystemResource fileSystemResource =
-//                new FileSystemResource(new File(attachment));
-//        mimeMessageHelper.addAttachment(fileSystemResource.getFilename(),
-//                fileSystemResource);
-//        mailSender.send(mimeMessage);
-        System.out.printf("Mail with attachment sent successfully..");
+    public EmailAttachmentSender() {
+        this.javaMailSender = javaMailSender;
+    }
+
+    public void sendEmailWithAttachments(String name, String toEmail,
+                                         String subject,
+                                         String body, String attachment) {
+
+        System.out.println("email sender" + toEmail + subject + body + name);
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setTo(toEmail);
+            String msg = "Sent By:- " + name + "\r\n" + " Message is :-  " + body;
+            mimeMessageHelper.setText(msg);
+            mimeMessageHelper.setSubject(subject);
+            FileSystemResource fileSystemResource =
+                    new FileSystemResource(new File(attachment));
+
+            mimeMessageHelper.addAttachment(fileSystemResource.getFilename(),
+                    fileSystemResource);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        javaMailSender.send(mimeMessage);
+        System.out.println("Mail with attachment sent successfully..");
     }
 
 }

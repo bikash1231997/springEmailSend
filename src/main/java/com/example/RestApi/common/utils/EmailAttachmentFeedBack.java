@@ -1,5 +1,10 @@
 package com.example.RestApi.common.utils;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -7,24 +12,47 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.File;
 
 @Service
 public class EmailAttachmentFeedBack {
 
-	/*@Autowired
-    static JavaMailSender mailSender;*/
+    @Autowired
+    private final JavaMailSender javaMailSender;
 
-    public static void sendEmailWithOutAttachments(String name, String toEmail, String subject, String body)  {
-       /* SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("fromemail@gmail.com");
-       message.setTo(toEmail);
-        message.setText(body);
+    public EmailAttachmentFeedBack(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
+    public void sendEmailWithAttachments(String name, String toEmail, String subject, String body) {
+/*
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
         message.setSubject(subject);
-        mailSender.send(message);
-        System.out.println("Mail Send...");*/
+        message.setText(body, true);
+*/
+
+
+/*        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setContent(body, "text/html");
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+        message.setContent(multipart);*/
+
+        System.out.println("Mail Send start...");
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = null;
+        try {
+            helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        helper.setTo(toEmail);
+        helper.setSubject(subject);
+        helper.setText(body, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();;
+        }
+        javaMailSender.send(mimeMessage);
+        System.out.println("Mail Send end...");
     }
 
     public static String feedBackEmail(String facebook, String twitter, String instagram) {

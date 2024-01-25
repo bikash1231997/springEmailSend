@@ -10,11 +10,6 @@ import com.example.RestApi.common.utils.EmailAttachmentSender;
 @SpringBootApplication
 public class RestApiApplication {
 
-	@Bean
-	public EmailAttachmentSender emailAttachmentSender() {
-        return new EmailAttachmentSender();
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(RestApiApplication.class, args);
 	}

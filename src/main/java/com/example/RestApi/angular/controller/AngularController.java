@@ -6,6 +6,7 @@ import com.example.RestApi.common.utils.EmailAttachmentSender;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,12 @@ public class AngularController {
 
     Logger logger = LoggerFactory.getLogger(AngularController.class);
 
+    @Autowired
+    EmailAttachmentFeedBack emailAttachmentFeedBack;
+
+    @Autowired
+    EmailAttachmentSender emailAttachmentSender;
+
     @RequestMapping(value = "", method = {RequestMethod.GET})
     public String hello() {
         return "Api is Running";
@@ -41,19 +48,20 @@ public class AngularController {
             try {
                 System.out.println("Hello");
                 if (email.getChecker().equals("akash")) {
-                    EmailAttachmentFeedBack.sendEmailWithOutAttachments("Akash Mahapatra", email.getEmailaddr(), "Thank You For Your Response", "Akash Mahapatra");
+                    emailAttachmentFeedBack.sendEmailWithAttachments("Akash Mahapatra", email.getEmailaddr(), "Thank You For Your Response", "Akash Mahapatra");
                     email.setEmailaddr("akashmahapatra71@gmail.com");
                     email.setMsg(email.getMsg() + "\r\n" + " Mailed By:- " + email.getEmailaddr());
-                    EmailAttachmentSender.sendEmailWithAttachments(email.getName(), email.getEmailaddr(), email.getSub(), email.getMsg(), "");
+                    emailAttachmentSender.sendEmailWithAttachments(email.getName(), email.getEmailaddr(), email.getSub(), email.getMsg(), "");
 
                 } else if (email.getChecker().equals("bikash")) {
                     String feedBackEmail = EmailAttachmentFeedBack.feedBackEmail(
                             "https://www.facebook.com/bikash.mahapatra.31", "https://twitter.com/bikashbalia",
                             "https://www.instagram.com/bikash_mahapatra_1997");
-                    EmailAttachmentFeedBack.sendEmailWithOutAttachments("Bikash Mahapatra", email.getEmailaddr(), "Thank You For Your Response", feedBackEmail );
+                    emailAttachmentFeedBack.sendEmailWithAttachments("Bikash Mahapatra", email.getEmailaddr(), "Thank You For Your Response", feedBackEmail );
                     email.setEmailaddr("bikashmohapatra1997@gmail.com");
                     email.setMsg(email.getMsg() + "\r\n" + " Mailed By:- " + email.getEmailaddr());
-                    EmailAttachmentSender.sendEmailWithAttachments(email.getName(), email.getEmailaddr(), email.getSub(), email.getMsg(), "");
+                    System.out.println(email);
+                    emailAttachmentSender.sendEmailWithAttachments(email.getName(), email.getEmailaddr(), email.getSub(), email.getMsg(), "");
                 } else {
                     return null;
                 }
