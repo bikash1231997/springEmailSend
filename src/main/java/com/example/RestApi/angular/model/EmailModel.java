@@ -5,23 +5,23 @@ import jakarta.validation.constraints.NotNull;
 
 public class EmailModel {
 
-    @NotNull(message = "Name Must Not Be Null")
-    private String name;
+	@NotNull(message = "Name Must Not Be Null")
+	private String name;
 
-    @NotNull(message = "Message Must Not Be Null")
-    private String msg;
+	@NotNull(message = "Message Must Not Be Null")
+	private String msg;
 
-    @NotNull(message = "Subject Must Not Be Null")
-    private String sub;
+	@NotNull(message = "Subject Must Not Be Null")
+	private String sub;
 
 	@Email
-    @NotNull(message = "Email Address Must Not Be Null")
-    private String emailaddr;
+	@NotNull(message = "Email Address Must Not Be Null")
+	private String emailaddr;
 
-    @NotNull(message = "Checker Must Not Be Null")
-    private String checker;
-    
-    public String getName() {
+	@NotNull(message = "Checker Must Not Be Null")
+	private String checker;
+
+	public String getName() {
 		return name;
 	}
 
@@ -62,20 +62,20 @@ public class EmailModel {
 	}
 
 	public EmailModel() {
-    	super();
-    }
-    
-    public EmailModel(@NotNull(message = "Name Must Not Be Null") String name,
-                      @NotNull(message = "Message Must Not Be Null") String msg,
-                      @NotNull(message = "Subject Must Not Be Null") String sub,
-                      @Email @NotNull(message = "Email Address Must Not Be Null") String emailaddr,
-                      @NotNull(message = "Checker Must Not Be Null") String checker) {
-        super();
-        this.name = name;
-        this.msg = msg;
-        this.sub = sub;
-        this.emailaddr = emailaddr;
-        this.checker = checker;
-    }
+		super();
+	}
+
+	public EmailModel(@NotNull(message = "Name Must Not Be Null") String name,
+			@NotNull(message = "Message Must Not Be Null") String msg,
+			@NotNull(message = "Subject Must Not Be Null") String sub,
+			@Email @NotNull(message = "Email Address Must Not Be Null") String emailaddr,
+			@NotNull(message = "Checker Must Not Be Null") String checker) {
+		super();
+		this.name = name;
+		this.msg = msg;
+		this.sub = sub;
+		this.emailaddr = emailaddr;
+		this.checker = checker;
+	}
 
 }
