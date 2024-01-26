@@ -1,7 +1,7 @@
 package com.example.RestApi.angular.model;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 public class EmailModel {
 
@@ -20,22 +20,6 @@ public class EmailModel {
 
 	@NotNull(message = "Checker Must Not Be Null")
 	private String checker;
-
-	public String getChecker() {
-		return checker;
-	}
-
-	public void setChecker(String checker) {
-		this.checker = checker;
-	}
-
-	public String getEmailaddr() {
-		return emailaddr;
-	}
-
-	public void setEmailaddr(String emailaddr) {
-		this.emailaddr = emailaddr;
-	}
 
 	public String getName() {
 		return name;
@@ -59,6 +43,26 @@ public class EmailModel {
 
 	public void setSub(String sub) {
 		this.sub = sub;
+	}
+
+	public String getEmailaddr() {
+		return emailaddr;
+	}
+
+	public void setEmailaddr(String emailaddr) {
+		this.emailaddr = emailaddr;
+	}
+
+	public String getChecker() {
+		return checker;
+	}
+
+	public void setChecker(String checker) {
+		this.checker = checker;
+	}
+
+	public EmailModel() {
+		super();
 	}
 
 	public EmailModel(@NotNull(message = "Name Must Not Be Null") String name,

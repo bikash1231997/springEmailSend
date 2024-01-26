@@ -1,58 +1,40 @@
 package com.example.RestApi.common.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.Properties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.stereotype.Service;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-@EnableTransactionManagement
+@Service
 public class EmailAttachmentFeedBack {
 
-	public static void sendEmailWithAttachments(String host, String port, final String addresses, final String password,
-			String name, String address, String subject, String message)
-			throws AddressException, MessagingException, UnsupportedEncodingException {
-		Properties properties = new Properties();
-		properties.put("mail.smtp.host", host);
-		properties.put("mail.smtp.port", 587);
-		properties.put("mail.smtp.auth", true);
-		properties.put("mail.smtp.ssl.trust", host);
-		properties.put("mail.smtp.starttls.enable", "true");
+	@Autowired
+	private final JavaMailSender javaMailSender;
 
-		Authenticator auth = new Authenticator() {
-			public PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(addresses, password);
-			}
+	public EmailAttachmentFeedBack(JavaMailSender javaMailSender) {
+		this.javaMailSender = javaMailSender;
+	}
+
+	public void sendEmailWithAttachments(String toEmail, String subject, String body) {
+
+		System.out.println("Mail Send start...");
+
+		MimeMessagePreparator messagePreparator = mimeMessage -> {
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+			helper.setTo(toEmail);
+			helper.setSubject("subject");
+			helper.setText(body, true);
 		};
 
-		Session session = Session.getInstance(properties, auth);
+		try {
+			javaMailSender.send(messagePreparator);
+		} catch (MailException e) {
+			e.printStackTrace();
+		}
 
-		Message msg = new MimeMessage(session);
-		msg.setFrom(new InternetAddress());
-		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(address));
-		msg.setSubject(subject);
-		msg.setSentDate(new Date());
-		MimeBodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setContent(message, "text/html");
-		Multipart multipart = new MimeMultipart();
-		multipart.addBodyPart(messageBodyPart);
-		msg.setContent(multipart);
-
-		Transport.send(msg);
-
+		System.out.println("Mail Send end...");
 	}
 
 	public static String feedBackEmail(String facebook, String twitter, String instagram) {
@@ -132,3 +114,32 @@ public class EmailAttachmentFeedBack {
 	}
 
 }
+
+//BELOW CODE IS OLD CODE FOR REFRENCE WHICH IS USING JAVA MAIL API NOW WE ARE USING SPRING MAIL API
+/*
+ * public static void sendEmailWithAttachments(String host, String port, final
+ * String addresses, final String password, String name, String address, String
+ * subject, String message) throws AddressException, MessagingException,
+ * UnsupportedEncodingException { Properties properties = new Properties();
+ * properties.put("mail.smtp.host", host); properties.put("mail.smtp.port",
+ * 587); properties.put("mail.smtp.auth", true);
+ * properties.put("mail.smtp.ssl.trust", host);
+ * properties.put("mail.smtp.starttls.enable", "true");
+ * 
+ * Authenticator auth = new Authenticator() { public PasswordAuthentication
+ * getPasswordAuthentication() { return new PasswordAuthentication(addresses,
+ * password); } };
+ * 
+ * Session session = Session.getInstance(properties, auth);
+ * 
+ * Message msg = new MimeMessage(session); msg.setFrom(new InternetAddress());
+ * msg.setRecipient(Message.RecipientType.TO, new InternetAddress(address));
+ * msg.setSubject(subject); msg.setSentDate(new Date()); MimeBodyPart
+ * messageBodyPart = new MimeBodyPart(); messageBodyPart.setContent(message,
+ * "text/html"); Multipart multipart = new MimeMultipart();
+ * multipart.addBodyPart(messageBodyPart); msg.setContent(multipart);
+ * 
+ * Transport.send(msg);
+ * 
+ * }
+ */

@@ -1,36 +1,32 @@
 package com.example.RestApi.angular.controller;
 
-import java.io.UnsupportedEncodingException;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import javax.validation.Valid;
-
+import com.example.RestApi.angular.model.EmailModel;
+import com.example.RestApi.common.utils.EmailAttachmentFeedBack;
+import com.example.RestApi.common.utils.EmailAttachmentSender;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RestApi.angular.model.EmailModel;
-import com.example.RestApi.common.utils.Constant;
-import com.example.RestApi.common.utils.EmailAttachmentFeedBack;
-import com.example.RestApi.common.utils.EmailAttachmentSender;
-
-//@CrossOrigin(origins = { "https://portfolioangularbikashmain.web.app", "https://portfolioangularbikash.web.app",
-//		"https://portfolioangularakashmain.web.app", "https://portfolioangularakash.web.app",
-//		"https://portfolioangularbkash.web.app" })
 @RestController
 @RequestMapping(value = "send/")
 public class AngularController {
 
 	Logger logger = LoggerFactory.getLogger(AngularController.class);
+
+	@Autowired
+	EmailAttachmentFeedBack emailAttachmentFeedBack;
+
+	@Autowired
+	EmailAttachmentSender emailAttachmentSender;
 
 	@RequestMapping(value = "", method = { RequestMethod.GET })
 	public String hello() {
@@ -48,24 +44,26 @@ public class AngularController {
 			try {
 				System.out.println("Hello");
 				if (email.getChecker().equals("akash")) {
-					EmailAttachmentFeedBack.sendEmailWithAttachments(Constant.host, Constant.port, Constant.mailFrom,
-							Constant.password, "Akash Mahapatra", email.getEmailaddr(), "Thank You For Your Response",
-							"");
-					email.setEmailaddr("akashmahapatra71@gmail.com");
+					System.out.println("akash");
+					emailAttachmentFeedBack.sendEmailWithAttachments(email.getEmailaddr(),
+							"Thank You For Your Response", "Akash Mahapatra");
 					email.setMsg(email.getMsg() + "\r\n" + " Mailed By:- " + email.getEmailaddr());
-					EmailAttachmentSender.sendEmailWithAttachments(Constant.host, Constant.port, Constant.mailFrom,
-							Constant.password, email.getName(), email.getEmailaddr(), email.getSub(), email.getMsg());
+					email.setEmailaddr("akashmahapatra71@gmail.com");
+					emailAttachmentSender.sendEmailWithAttachments(email.getName(), email.getEmailaddr(),
+							email.getSub(), email.getMsg(), "");
+
 				} else if (email.getChecker().equals("bikash")) {
+					System.out.println("bikash");
 					String feedBackEmail = EmailAttachmentFeedBack.feedBackEmail(
 							"https://www.facebook.com/bikash.mahapatra.31", "https://twitter.com/bikashbalia",
 							"https://www.instagram.com/bikash_mahapatra_1997");
-					EmailAttachmentFeedBack.sendEmailWithAttachments(Constant.host, Constant.port, Constant.mailFrom,
-							Constant.password, "Bikash Mahapatra", email.getEmailaddr(), "Thank You For Your Response",
-							feedBackEmail);
-					email.setEmailaddr("bikashmohapatra1997@gmail.com");
+					emailAttachmentFeedBack.sendEmailWithAttachments(email.getEmailaddr(),
+							"Thank You For Your Response", feedBackEmail);
 					email.setMsg(email.getMsg() + "\r\n" + " Mailed By:- " + email.getEmailaddr());
-					EmailAttachmentSender.sendEmailWithAttachments(Constant.host, Constant.port, Constant.mailFrom,
-							Constant.password, email.getName(), email.getEmailaddr(), email.getSub(), email.getMsg());
+					email.setEmailaddr("bikashmohapatra1997@gmail.com");
+					System.out.println(email);
+					emailAttachmentSender.sendEmailWithAttachments(email.getName(), email.getEmailaddr(),
+							email.getSub(), email.getMsg(), "");
 				} else {
 					return null;
 				}
